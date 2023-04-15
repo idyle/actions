@@ -1,0 +1,23 @@
+{
+  "name": "deployer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/artifact-registry": "^2.2.2",
+    "@google-cloud/cloudbuild": "^3.5.2",
+    "@google-cloud/compute": "^3.9.1",
+    "@google-cloud/run": "^0.4.2",
+    "@google-cloud/storage": "^6.9.5",
+    "archiver": "^5.3.1",
+    "bl": "^6.0.1",
+    "dotenv": "^16.0.3"
+  }
+}
