@@ -30,5 +30,3 @@ export const listFolder = async (sourceDir) => {
         return [];
     }
 };
-
-listFolder('../app/build').then(r => console.log(r))

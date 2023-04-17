@@ -152,7 +152,8 @@ export const updateFrontend = async (folderPath) => {
 
 // updateBackend('../api', 'deployerapitestrelease15', [ 
 //     { name: 'STRIPE_KEY', value: 'sk_test_51MbGHnBVlu9NzRVapG50u76rafurul6CDL6EY2wodmLM0dcTJL7s0Z6nfCFGqUbGP2Ys8vTnAHnxmqNqzuJKLZoR00HLeLsz94' },
-//     { name: 'PROJECT', value: 'idyleio' }, { name: 'DEFAULT_BUCKET', value: 'idyle' }, { name: 'DEFAULT_LOAD_BALANCER', value: 'lb' }
+//     { name: 'PROJECT', value: 'idyleio' }, { name: 'DEFAULT_BUCKET', value: 'idyle' }, { name: 'DEFAULT_LOAD_BALANCER', value: 'lb' },
+//     { name: 'API_BASEPATH', value: 'https://idyle.app'}
 // ])
 
 // createFrontend('../app/build', 'idyletest');
