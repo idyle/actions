@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+import Path from 'path';
+dotenv.config({ path: Path.resolve('../cli/.env') });
 import { BackendServicesClient, GlobalOperationsClient, UrlMapsClient, RegionNetworkEndpointGroupsClient, BackendBucketsClient } from '@google-cloud/compute';
 
 const frontend = new BackendBucketsClient();

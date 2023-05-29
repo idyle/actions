@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import Path from 'path';
+dotenv.config({ path: Path.resolve('../cli/.env') });
 // temporary import 
 import { ServicesClient } from '@google-cloud/run';
 import { promisify } from 'util';
