@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import Path from 'path';
-dotenv.config({ path: Path.resolve('../cli/.env') });
+dotenv.config({ path: Path.resolve('/Users/marcus/Desktop/idyle/cli/.env') });
 import { BackendServicesClient, GlobalOperationsClient, UrlMapsClient, RegionNetworkEndpointGroupsClient, BackendBucketsClient } from '@google-cloud/compute';
 
 const frontend = new BackendBucketsClient();
@@ -52,14 +52,15 @@ export const createEndpoint = async (serviceName) => {
 //     };
 // };
 
-export const createFrontendInstance = async (websiteName) => {
-    if (!websiteName) return false;
+export const createFrontendInstance = async (websiteName, bucketName) => {
+    if (!websiteName || !bucketName) return false;
     try {
         const config = { 
             project,
-            backendBucketResource: { name: websiteName, bucketName: websiteName }    
+            backendBucketResource: { name: websiteName, bucketName }    
         };
         const [ operation ] = await frontend.insert(config);
+        console.log(operation);
         if (!operation || operation?.error) return false;
         return operation;
     } catch (e) {
@@ -97,6 +98,7 @@ export const awaitInstance = async (operationId) => {
             operation: operationId
         };
         const [ operation ] = await operations.wait(config);
+        console.log(operation, operation?.error);
         if (operation?.error) return false;
         return operation?.status;
     } catch (e) {

@@ -89,7 +89,7 @@ export const createFrontend = async (folderPath, websiteName) => {
     if (!source) return console.error('Source creation failed!', source);
 
     console.info('STEP 2 of 9: Beginning instance creation...');
-    const instance = await createFrontendInstance(websiteName);
+    const instance = await createFrontendInstance(websiteName, `idyle-${websiteName}`);
     if (!instance) return console.error('Instance creation failed!', instance);
 
     console.info('STEP 3 of 9: Tracking instance creation...');

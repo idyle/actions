@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import Path from 'path';
-dotenv.config({ path: Path.resolve('../cli/.env') });
+dotenv.config({ path: Path.resolve('/Users/marcus/Desktop/idyle/cli/.env') });
 // temporary import
 
 import { CloudBuildClient } from '@google-cloud/cloudbuild';
