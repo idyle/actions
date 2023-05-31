@@ -118,7 +118,7 @@ export const createFrontend = async (folderPath, websiteName) => {
 
     console.info('STEP 9 of 9: Beginning metadata set...');
     const metadata = await setMetadata({ 
-        website: { mainPageSuffix: 'index.html', NotFoundPage: 'index.html' }
+        website: { mainPageSuffix: 'index.html', notFoundPage: 'index.html' }
     }, `idyle-${websiteName}`);
     if (!metadata) return console.error('Metadata set failed!', metadata);
 
@@ -144,7 +144,7 @@ export const updateFrontend = async (folderPath, websiteName) => {
 
     console.info('STEP 4 of 4: Beginning metadata set...');
     const metadata = await setMetadata({ 
-        website: { mainPageSuffix: 'index.html', NotFoundPage: 'index.html' }
+        website: { mainPageSuffix: 'index.html', notFoundPage: 'index.html' }
     }, `idyle-${websiteName}`);
     if (!metadata) return console.error('Metadata set failed!', metadata);
 
