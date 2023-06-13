@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
-import Path from 'path';
-dotenv.config({ path: Path.resolve('/Users/marcus/Desktop/idyle/cli/.env') });
-// temporary import 
 import { ServicesClient } from '@google-cloud/run';
-import { promisify } from 'util';
+import Path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: Path.join(__dirname, '..', '.env') });
 
 const services = new ServicesClient();
 const project = process.env.PROJECT_NAME;

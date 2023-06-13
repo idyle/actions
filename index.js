@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-import dotenv from 'dotenv';
 import { readFile } from "fs/promises";
 import { createBackend, createFrontend, updateBackend, updateFrontend } from "./commands.js";
-import Path from 'path';
+
 
 const getVariables = async () => {
     try {
@@ -23,7 +22,6 @@ const getVariables = async () => {
 
 (async () => {
     const commands = process.argv.slice(2) || [];
-    dotenv.config({ path: Path.resolve('/Users/marcus/Desktop/idyle/cli/.env') });
     if (commands?.length !== 3) return console.error('Command does not exist.');
     let service = commands[0], path = process.cwd(), variables = await getVariables() || [];
     if (commands[1] === 'frontend' && commands[2] === 'create') createFrontend(path, service);

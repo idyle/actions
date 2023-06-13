@@ -1,8 +1,12 @@
 import dotenv from 'dotenv';
-import Path from 'path';
-dotenv.config({ path: Path.resolve('/Users/marcus/Desktop/idyle/cli/.env') });
 import { Storage } from "@google-cloud/storage";
 import { randomBytes } from 'crypto';
+import Path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: Path.join(__dirname, '..', '.env') });
 
 const storage = new Storage();
 const storageBucket = process.env.DEFAULT_BUCKET_NAME;

@@ -9,6 +9,7 @@ idyle's Command Line interface (CLI) for system and service deployments.
 The variables below require idyle's internal configurations. Authorization will be needed to access this information.
 
 ```
+GOOGLE_APPLICATION_CREDENTIALS=
 PROJECT_NAME=
 DEFAULT_BUCKET_NAME=
 DEPLOYMENT_BUCKET_NAME=

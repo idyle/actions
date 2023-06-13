@@ -138,7 +138,7 @@ export const updateFrontend = async (folderPath, websiteName) => {
     const deletedFiles = await deleteFiles(currentFiles, `idyle-${websiteName}`);
     if (!deletedFiles) return console.error('File clean-up failed!', deletedFiles);
 
-    console.info('STEP of 3 of 4: Beginning file upload...');
+    console.info('STEP 3 of 4: Beginning file upload...');
     const uploadedFiles = await deployFiles(folderPath, (await listFolder(folderPath)), `idyle-${websiteName}`);
     if (!uploadedFiles) return console.error('FIle upload failed!', uploadedFiles);
 
