@@ -85,11 +85,11 @@ export const createFrontend = async (folderPath, websiteName) => {
     console.time();
 
     console.info('STEP 1 OF 9: Beginning source creation...');
-    const source = await createBucket(`idyle-${websiteName}`);
+    const source = await createBucket(`${websiteName}.idyle.app`);
     if (!source) return console.error('Source creation failed!', source);
 
     console.info('STEP 2 of 9: Beginning instance creation...');
-    const instance = await createFrontendInstance(websiteName, `idyle-${websiteName}`);
+    const instance = await createFrontendInstance(websiteName, `${websiteName}.idyle.app`);
     if (!instance) return console.error('Instance creation failed!', instance);
 
     console.info('STEP 3 of 9: Tracking instance creation...');
@@ -101,25 +101,25 @@ export const createFrontend = async (folderPath, websiteName) => {
     if (!mapping) return console.error('Mapping creation failed!', mapping);
 
     console.info('STEP 5 of 9: Beginning file retrieval...');
-    const currentFiles = await listFiles(`idyle-${websiteName}`);
+    const currentFiles = await listFiles(`${websiteName}.idyle.app`);
     if (!currentFiles) return console.error('File retrieval failed!', currentFiles);
 
     console.info('STEP 6 of 9: Beginning file clean-up...');
-    const deletedFiles = await deleteFiles(currentFiles, `idyle-${websiteName}`);
+    const deletedFiles = await deleteFiles(currentFiles, `${websiteName}.idyle.app`);
     if (!deletedFiles) return console.error('File clean-up failed!', deletedFiles);
 
-    console.info('STEP of 7 of 9: Beginning file upload...');
-    const uploadedFiles = await deployFiles(folderPath, (await listFolder(folderPath)), `idyle-${websiteName}`);
+    console.info('STEP 7 of 9: Beginning file upload...');
+    const uploadedFiles = await deployFiles(folderPath, (await listFolder(folderPath)), `${websiteName}.idyle.app`);
     if (!uploadedFiles) return console.error('FIle upload failed!', uploadedFiles);
 
     console.info('STEP 8 of 9: Beginning public access...');
-    const access = await makeFrontendPublic(`idyle-${websiteName}`);
+    const access = await makeFrontendPublic(`${websiteName}.idyle.app`);
     if (!access) return console.error('Public access failed!', access);
 
     console.info('STEP 9 of 9: Beginning metadata set...');
     const metadata = await setMetadata({ 
         website: { mainPageSuffix: 'index.html', notFoundPage: 'index.html' }
-    }, `idyle-${websiteName}`);
+    }, `${websiteName}.idyle.app`);
     if (!metadata) return console.error('Metadata set failed!', metadata);
 
     console.info('Frontend successfully created.');
@@ -131,21 +131,21 @@ export const updateFrontend = async (folderPath, websiteName) => {
     console.time();
 
     console.info('STEP 1 of 4: Beginning file retrieval...');
-    const currentFiles = await listFiles(`idyle-${websiteName}`);
+    const currentFiles = await listFiles(`${websiteName}.idyle.app`);
     if (!currentFiles) return console.error('File retrieval failed!', currentFiles);
 
     console.info('STEP 2 of 4: Beginning file clean-up...');
-    const deletedFiles = await deleteFiles(currentFiles, `idyle-${websiteName}`);
+    const deletedFiles = await deleteFiles(currentFiles, `${websiteName}.idyle.app`);
     if (!deletedFiles) return console.error('File clean-up failed!', deletedFiles);
 
     console.info('STEP 3 of 4: Beginning file upload...');
-    const uploadedFiles = await deployFiles(folderPath, (await listFolder(folderPath)), `idyle-${websiteName}`);
+    const uploadedFiles = await deployFiles(folderPath, (await listFolder(folderPath)), `${websiteName}.idyle.app`);
     if (!uploadedFiles) return console.error('FIle upload failed!', uploadedFiles);
 
     console.info('STEP 4 of 4: Beginning metadata set...');
     const metadata = await setMetadata({ 
         website: { mainPageSuffix: 'index.html', notFoundPage: 'index.html' }
-    }, `idyle-${websiteName}`);
+    }, `${websiteName}.idyle.app`);
     if (!metadata) return console.error('Metadata set failed!', metadata);
 
     console.info('Frontend successfully updated.');

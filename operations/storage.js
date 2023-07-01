@@ -9,17 +9,15 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: Path.join(__dirname, '..', '.env') });
 
 const storage = new Storage();
-const storageBucket = process.env.DEFAULT_BUCKET_NAME;
-const storageDeploymentBucket = process.env.DEPLOYMENT_BUCKET_NAME;
-const storageFrontendBucket = process.env.FRONTEND_BUCKET_NAME;
-// stage for removal when tests are complete
+const defaultBucket = process.env.IDYLE_CLI_DEFAULT_BUCKET;
+// const storageDeploymentBucket = process.env.DEPLOYMENT_BUCKET_NAME;
 
 export const uploadFiles = async (filepath) => {
     try {
-        const storageBucketReference = storage.bucket(storageBucket);
+        const storageBucketReference = storage.bucket(defaultBucket);
         const file = filepath.substring(filepath.lastIndexOf('/') + 1);
         const fullPath = path.resolve(filepath);
-        const destination = `${storageDeploymentBucket}/${file}`;
+        const destination = `deployments/${file}`;
         const upload = await storageBucketReference.upload(fullPath, { destination });
         if (!upload) return false;
         return upload;
@@ -31,7 +29,7 @@ export const uploadFiles = async (filepath) => {
 
 export const uploadFile = async (bufferCont) => {
     try {
-        const storageBucketReference = storage.bucket(storageBucket);
+        const storageBucketReference = storage.bucket(defaultBucket);
         const fileName = `${randomBytes(16).toString('hex')}.tar.gz`;
         await storageBucketReference.file(`deployments/${fileName}`).save(bufferCont);
         return fileName;
@@ -43,8 +41,8 @@ export const uploadFile = async (bufferCont) => {
 
 export const deleteFile = async (objectName) => {
     try {
-        const storageBucketReference = storage.bucket(storageBucket);
-        const deletion = await storageBucketReference.file(`${storageDeploymentBucket}/${objectName}`).delete();
+        const storageBucketReference = storage.bucket(defaultBucket);
+        const deletion = await storageBucketReference.file(`deployments/${objectName}`).delete();
         if (!deletion) return false;
         return deletion;
     } catch (e) {

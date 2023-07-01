@@ -8,15 +8,21 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: Path.join(__dirname, '..', '.env') });
 
 const services = new ServicesClient();
-const project = process.env.PROJECT_NAME;
-const serviceAccount = process.env.DEFAULT_SERVICE_ACCOUNT;
-const defaultLocation = process.env.DEFAULT_LOCATION;
+const defaultLocation = process.env.IDYLE_CLI_DEFAULT_LOCATION;
+// const project = process.env.PROJECT_NAME;
+// const serviceAccount = process.env.DEFAULT_SERVICE_ACCOUNT;
+
+const getClient = async () => {
+    const { email, projectId } = await services.auth.getClient();
+    return { serviceAccount: email, project: projectId };
+};
 
 // createService
 
 export const createService = async (serviceName, image, envVariables = []) => {
     if (!serviceName || !image) return false;
     try {
+        const { serviceAccount, project } = await getClient();
         const config = {
             parent: `projects/${project}/locations/${defaultLocation}`,
             service: {
@@ -42,6 +48,7 @@ export const createService = async (serviceName, image, envVariables = []) => {
 export const updateService = async (serviceName, image, envVariables = []) => {
     if (!serviceName || !image) return false;
     try {
+        const { serviceAccount, project } = await getClient();
         const config = {
             service: {
                 name: `projects/${project}/locations/${defaultLocation}/services/${serviceName}`,
@@ -81,34 +88,3 @@ export const makePublic = async (serviceName) => {
         return false;
     }
 };
-
-// // awaitService
-
-// export const getOperation = async (operationName) => {
-//     if (!operationName) return false;
-//     try {
-//         const config = {
-//             name: operationName
-//         };
-
-//         const [ operation ] = await services.getOperation(config);
-//         if (operation?.error || !operation) return false;
-//         return operation;
-
-//     } catch (e) {
-//         console.error(e);
-//         return false;
-//     }
-// };
-
-// export const awaitService = async (operationName) => {
-//     for (let round = 0; round < 40; round++) {
-//         // max build time is 40 * 3000ms = 120s / 2m
-//         const startTime = Date.now();
-//         const service = await getOperation(operationName);
-//         if (service?.done && check?.error) return false;
-//         else if (service?.done && check?.response) return true;
-//         await promisify(setTimeout)(3000 - (Date.now() - startTime));
-//     }
-//     return false;
-// };

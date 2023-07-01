@@ -13,9 +13,9 @@ const operations = new GlobalOperationsClient();
 const mappings = new UrlMapsClient();
 const endpoints = new RegionNetworkEndpointGroupsClient();
 
-const project = process.env.PROJECT_NAME;
-const loadBalancer = process.env.DEFAULT_LOAD_BALANCER_NAME;
-const defaultLocation = process.env.DEFAULT_LOCATION;
+const project = process.env.IDYLE_CLI_PROJECT_NAME;
+const defaultLoadBalancer = process.env.IDYLE_CLI_DEFAULT_LOAD_BALANCER;
+const defaultLocation = process.env.IDYLE_CLI_DEFAULT_LOCATION;
 
 export const createEndpoint = async (serviceName) => {
     if (!serviceName) return false;
@@ -38,23 +38,6 @@ export const createEndpoint = async (serviceName) => {
         return false;
     }
 };
-
-// export const awaitEndpoint = async (operationId) => {
-//     if (!operationId) return false;
-//     try {
-//         const config = {
-//             project,
-//             operation: operationId,
-//             region: defaultLocation
-//         };
-//         const [ operation ] = await regionalOperations.wait(config);
-//         if (operation?.error) return false;
-//         return operation?.status;
-//     } catch (e) {
-//         console.error(e);
-//         return false;
-//     };
-// };
 
 export const createFrontendInstance = async (websiteName, bucketName) => {
     if (!websiteName || !bucketName) return false;
@@ -130,9 +113,9 @@ export const createMapping = async (serviceName, backendLink) => {
     try {
         const config = {
             project,
-            urlMap: loadBalancer,
+            urlMap: defaultLoadBalancer,
             urlMapResource: {
-                name: loadBalancer,
+                name: defaultLoadBalancer,
                 pathMatchers: [ ...list?.pathMatchers, { name: `${serviceName}-path`, defaultService: backendLink } ],
                 hostRules: [ ...list?.hostRules, { hosts: [ `${serviceName}.idyle.app` ], pathMatcher: `${serviceName}-path` } ]
             }

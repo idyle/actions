@@ -5,31 +5,36 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: Path.join(__dirname, '..', '.env') });
-// temporary import
 
 import { CloudBuildClient } from '@google-cloud/cloudbuild';
 import { randomBytes } from 'crypto';
-import { promisify } from 'util';
 
 const build = new CloudBuildClient();
 
-const project = process.env.PROJECT_NAME;
-const storageBucket = process.env.DEFAULT_BUCKET_NAME;
-const storageDeploymentBucket = process.env.DEPLOYMENT_BUCKET_NAME;
-const artifactDeploymentRepository = process.env.DEPLOYMENT_REPOSITORY;
-const artifactPath = process.env.ARTIFACT_PATH;
+const defaultBucket = process.env.IDYLE_CLI_DEFAULT_BUCKET;
+const defaultLocation = process.env.IDYLE_CLI_DEFAULT_LOCATION;
+// const storageDeploymentBucket = process.env.DEPLOYMENT_BUCKET_NAME;
+// const artifactDeploymentRepository = process.env.DEPLOYMENT_REPOSITORY;
+// const artifactPath = process.env.ARTIFACT_PATH;
+
+const getClient = async () => {
+    const { email, projectId } = await build.auth.getClient();
+    return { serviceAccount: email, project: projectId };
+};
 
 // create Build
 
 export const createBuild = async (objectFileName) => {
     if (!objectFileName) return false;
     try {
+        const { project } = await getClient();
+        const artifactPath = `${defaultLocation}-docker.pkg.dev/${project}`;
         const imageName = randomBytes(16).toString('hex');
-        const imagePath = `${artifactPath}/${artifactDeploymentRepository}/${imageName}`;
+        const imagePath = `${artifactPath}/deployments/${imageName}`;
         const config = {
             projectId: project,
             build: {
-                source: { storageSource: { bucket: storageBucket, object: `${storageDeploymentBucket}/${objectFileName}` } },
+                source: { storageSource: { bucket: defaultBucket, object: `deployments/${objectFileName}` } },
                 steps: [
                     {
                         name: 'gcr.io/k8s-skaffold/pack',
@@ -49,33 +54,3 @@ export const createBuild = async (objectFileName) => {
         return false;
     }
 };
-
-// // get build status
-
-// const getBuild = async (buildId) => {
-//     if (!buildId) return false;
-//     try {
-//         const config = { projectId: project, id: buildId };
-//         const [ response ] = await build.getBuild(config);
-//         console.log('RESPONSE FROMG ET BUILD', response);
-//         return response;
-//     } catch (e) {
-//         console.error(e);
-//         return false;
-//     }
-// };
-
-// // track build
-
-// export const awaitBuild = async (buildId) => {
-//     for (let round = 0; round < 40; round++) {
-//         // max build time is 40 * 3000ms = 120s / 2m
-//         const startTime = Date.now();
-//         const build = await getBuild(buildId);
-//         console.log(`Round ${round}, Status: ${build?.status}`);
-//         if (build?.status === 'FAILURE' || build?.status === 'INTERNAL_ERROR') return false;
-//         else if (build?.status === 'SUCCESS') return true;
-//         await promisify(setTimeout)(3000-(Date.now() - startTime));
-//     }
-//     return false;
-// };
